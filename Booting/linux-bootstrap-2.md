@@ -458,7 +458,8 @@ Offset  Size    Description
  08h    BYTE    feature byte 4 (see #00513)
  09h    BYTE    feature byte 5 (see #00514)
 ---AWARD BIOS---
- 0Ah  N BYTEs   AWARD copyright notice
+
+0Ah  N BYTEs   AWARD copyright notice
 ---Phoenix BIOS---
  0Ah    BYTE    ??? (00h)
  0Bh    BYTE    major version
@@ -476,7 +477,7 @@ Offset  Size    Description
 Next we call the `set_fs` routine and pass the value of the `es` register to it. The implementation of `set_fs` is pretty simple:
 
 ```c
-static inline void set_fs(u16 seg)
+ static inline void set_fs(u16 seg)
 {
     asm volatile("movw %0,%%fs" : : "rm" (seg));
 }
@@ -516,6 +517,7 @@ for (devno = 0x80; devno < 0x80+EDD_MBR_SIG_MAX; devno++) {
     ...
     ...
     ...
+    }
 ```
 
 where `0x80` is the first hard drive and the value of `EDD_MBR_SIG_MAX` macro is 16. It collects data into the array of [edd_info](https://github.com/torvalds/linux/blob/master/include/uapi/linux/edd.h#L172) structures. `get_edd_info` checks that EDD is present by invoking the `0x13` interrupt with `ah` as `0x41` and if EDD is present, `get_edd_info` again calls the `0x13` interrupt, but with `ah` as `0x48` and `si` containing the address of the buffer where EDD information will be stored.
